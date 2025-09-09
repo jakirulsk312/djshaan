@@ -98,7 +98,7 @@ const Admin = () => {
       <div className="relative flex-1">
         <div
           className="absolute inset-0 bg-cover bg-center bg-fixed"
-          style={{ backgroundImage: "url('/background.jpg')" }}
+          style={{ backgroundImage: "url('/background.jpeg')" }}
         ></div>
         <div className="absolute inset-0 bg-[hsl(230_20%_8%_/_0.85)]"></div>
 

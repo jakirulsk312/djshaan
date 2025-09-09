@@ -59,20 +59,27 @@ const HeroSection = () => {
       {/* Main Content */}
       <div className="relative z-10 text-center px-4 max-w-6xl mx-auto pt-20 md:pt-32">
         {/* Hero Image is commented out */}
-        {/* <img
-          src={HeroImage}
-          alt="VDJ Shaan"
-          className="w-full h-[50vh] object-cover rounded-2xl shadow-lg animate-glow mt-16 md:mt-20"
-        /> */}
 
-        <h2 className="text-foreground text-lg md:text-2xl mt-4">
+<div className="flex justify-center mt-4 md:mt-6">
+  <img
+    src="/vdj_logo.png"
+    alt="VDJ Shaan"
+    className="w-32 h-32 md:w-40 md:h-40 object-contain animate-glow invert brightness-200"
+  />
+</div>
+
+
+
+
+
+        {/* <h2 className="text-foreground text-lg md:text-2xl mt-4">
           Your Vibe, My DJ World
         </h2>
 
         <p className="text-base md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto">
           <span className="text-primary glow-purple">One channel and album, Endless DJ</span> –{" "}
           <span className="text-secondary glow-yellow">for your vibes and emotions</span>
-        </p>
+        </p> */}
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mb-12">
@@ -104,7 +111,7 @@ const HeroSection = () => {
             <h2 className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-lime-600 to-orange-500 bg-clip-text text-transparent mb-4">
               ✨ Latest Releases
             </h2>
-           
+
           </div>
 
 

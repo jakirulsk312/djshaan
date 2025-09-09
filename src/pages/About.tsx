@@ -33,7 +33,7 @@ const About = () => {
         {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-fixed"
-          style={{ backgroundImage: "url('/background.jpg')" }}
+          style={{ backgroundImage: "url('/background.jpeg')" }}
         ></div>
 
         {/* Dark Overlay */}

@@ -258,7 +258,7 @@ import { motion } from "framer-motion";
 import AddSong from "./AddSong";
 import UpdateSong from "./UpdateSong";
 import DeleteSong from "./DeleteSong";
-import ManageAlbums from "./AlbumManagement"; // Combined Upload + Manage Albums
+import ManageAlbums from "./AlbumManagement"; 
 import EventsManagement from "./EventsManagement";
 import GalleryManagement from "./GalleryManagement";
 

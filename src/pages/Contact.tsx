@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Send, MessageCircle } from "lucide-react";
+import { FaFacebook, FaInstagram, FaYoutube, FaSpotify, FaSoundcloud } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -44,7 +46,6 @@ const Contact = () => {
           from_email: formData.email,
           message: formData.message
         })
-
       });
 
       const data = await res.json();
@@ -62,27 +63,26 @@ const Contact = () => {
     }
   };
 
-const contactInfo = [
-  { 
-    icon: Mail, 
-    title: "Email", 
-    detail: "vdjshaanofficial@gmal.com", 
-    color: "text-primary" 
-  },
-{ 
-    icon: Phone, 
-    title: "Name | Phone", 
-    detail: <>Mohammmed Nabi Mansoor - VDJ store digital media<br />+91 8777014993</>, 
-    color: "text-secondary" 
-  },
-  { 
-    icon: MapPin, 
-    title: "Address", 
-    detail: "KIRIT CHS A6, Ramachandra Lane-Extn, Near Movie Time, Malad West, Mumbai - 400064", 
-    color: "text-accent" 
-  }
-];
-
+  const contactInfo = [
+    { 
+      icon: Mail, 
+      title: "Email", 
+      detail: "vdjshaanofficial@gmal.com", 
+      color: "text-primary" 
+    },
+    { 
+      icon: Phone, 
+      title: "Name | Phone", 
+      detail: <>Mohammmed Nabi Mansoor - VDJ store digital media<br />+91 8777014993</>, 
+      color: "text-secondary" 
+    },
+    { 
+      icon: MapPin, 
+      title: "Address", 
+      detail: "KIRIT CHS A6, Ramachandra Lane-Extn, Near Movie Time, Malad West, Mumbai - 400064", 
+      color: "text-accent" 
+    }
+  ];
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -90,7 +90,7 @@ const contactInfo = [
       <div className="relative flex-1">
         <div
           className="absolute inset-0 bg-cover bg-center bg-fixed"
-          style={{ backgroundImage: "url('/background.jpg')" }}
+          style={{ backgroundImage: "url('/background.jpeg')" }}
         />
         <div className="absolute inset-0 bg-[hsl(230_20%_8%_/_0.85)]"></div>
 
@@ -190,7 +190,7 @@ const contactInfo = [
                   </CardContent>
                 </Card>
 
-                {/* Contact Info & Quick Links */}
+                {/* Contact Info & Social Links */}
                 <div className="space-y-8">
                   <Card className="bg-card/30 backdrop-blur-sm border-primary/20 transform transition-all duration-500 hover:scale-105 animate-float">
                     <CardContent className="p-8">
@@ -216,6 +216,28 @@ const contactInfo = [
                             </div>
                           );
                         })}
+                      </div>
+
+                      {/* Social Icons */}
+                      <div className="flex justify-start gap-5 mt-8 text-xl text-muted-foreground">
+                        <a href="https://www.facebook.com/vdjshaan.official" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                          <FaFacebook />
+                        </a>
+                        <a href="https://www.instagram.com/vdjshaan" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                          <FaInstagram />
+                        </a>
+                        <a href="https://www.youtube.com/vdjshaan" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                          <FaYoutube />
+                        </a>
+                        <a href="https://open.spotify.com/artist/7uypXShthkQWrIUhpW6cJb" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                          <FaSpotify />
+                        </a>
+                        <a href="https://soundcloud.com/vdjshaan" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                          <FaSoundcloud />
+                        </a>
+                        <a href="https://twitter.com/vdjshaan" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                          <FaXTwitter />
+                        </a>
                       </div>
                     </CardContent>
                   </Card>
