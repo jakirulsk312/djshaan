@@ -1,0 +1,181 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Dark futuristic theme */
+    --background: 230 20% 8%;
+    --foreground: 0 0% 98%;
+
+    --card: 230 20% 12%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 230 20% 12%;
+    --popover-foreground: 0 0% 98%;
+
+    /* Neon accents */
+    --primary: 120 100% 50%;
+    --primary-foreground: 230 20% 8%;
+
+    --secondary: 280 100% 70%;
+    --secondary-foreground: 230 20% 8%;
+
+    --accent: 60 100% 50%;
+    --accent-foreground: 230 20% 8%;
+
+    --muted: 230 15% 20%;
+    --muted-foreground: 0 0% 65%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 230 15% 25%;
+    --input: 230 15% 15%;
+    --ring: 120 100% 50%;
+
+    /* Futuristic gradients */
+    --gradient-neon: linear-gradient(135deg, hsl(120 100% 50%), hsl(280 100% 70%), hsl(60 100% 50%));
+    --gradient-dark: linear-gradient(135deg, hsl(230 20% 12%), hsl(230 15% 8%));
+    --gradient-glow: radial-gradient(circle at center, hsl(120 100% 50% / 0.3), transparent);
+
+    /* Shadows and effects */
+    --shadow-neon: 0 0 20px hsl(120 100% 50% / 0.5);
+    --shadow-purple: 0 0 20px hsl(280 100% 70% / 0.5);
+    --shadow-yellow: 0 0 20px hsl(60 100% 50% / 0.5);
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 230 20% 10%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 120 100% 50%;
+    --sidebar-primary-foreground: 230 20% 8%;
+    --sidebar-accent: 230 15% 20%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 230 15% 25%;
+    --sidebar-ring: 120 100% 50%;
+  }
+
+  .dark {
+    /* Force dark theme values */
+    --background: 230 20% 8%;
+    --foreground: 0 0% 98%;
+    --card: 230 20% 12%;
+    --card-foreground: 0 0% 98%;
+    --popover: 230 20% 12%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 120 100% 50%;
+    --primary-foreground: 230 20% 8%;
+    --secondary: 280 100% 70%;
+    --secondary-foreground: 230 20% 8%;
+    --accent: 60 100% 50%;
+    --accent-foreground: 230 20% 8%;
+    --muted: 230 15% 20%;
+    --muted-foreground: 0 0% 65%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 230 15% 25%;
+    --input: 230 15% 15%;
+    --ring: 120 100% 50%;
+    --sidebar-background: 230 20% 10%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 120 100% 50%;
+    --sidebar-primary-foreground: 230 20% 8%;
+    --sidebar-accent: 230 15% 20%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 230 15% 25%;
+    --sidebar-ring: 120 100% 50%;
+  }
+}
+/* 
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+} */
+
+
+@layer base {
+  body {
+    @apply text-foreground font-sans antialiased;
+    background: 
+      linear-gradient(hsl(230 20% 8% / 0.85), hsl(230 20% 8% / 0.85)),
+      url('/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+}
+
+
+
+/* Custom utility classes */
+@layer utilities {
+  .glow {
+    @apply drop-shadow-[0_0_20px_hsl(var(--primary)_/_0.5)];
+  }
+  
+  .glow-purple {
+    @apply drop-shadow-[0_0_20px_hsl(280_100%_70%_/_0.5)];
+  }
+  
+  .glow-yellow {
+    @apply drop-shadow-[0_0_20px_hsl(60_100%_50%_/_0.5)];
+  }
+
+  .gradient-neon {
+    background: linear-gradient(135deg, hsl(120 100% 50%), hsl(280 100% 70%), hsl(60 100% 50%));
+  }
+
+  .gradient-dark {
+    background: linear-gradient(135deg, hsl(230 20% 12%), hsl(230 15% 8%));
+  }
+
+  .text-neon {
+    background: linear-gradient(135deg, hsl(120 100% 50%), hsl(280 100% 70%), hsl(60 100% 50%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px hsl(120 100% 50% / 0.5);
+  }
+  50% { 
+    box-shadow: 0 0 40px hsl(120 100% 50% / 0.8);
+  }
+}
+
+@keyframes glow {
+  0% { 
+    text-shadow: 0 0 10px hsl(120 100% 50% / 0.8);
+  }
+  100% { 
+    text-shadow: 0 0 20px hsl(120 100% 50% / 1), 0 0 30px hsl(280 100% 70% / 0.5);
+  }
+}
