@@ -1,7 +1,5 @@
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
-import FeaturesSection from "@/components/FeaturesSection";
-import EfficiencySection from "@/components/EfficiencySection";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import AlbumSection from "@/components/AlbumSection";
@@ -28,8 +26,6 @@ const Index = () => {
             <HeroSection />
             <AlbumSection />
             <GallerySection />
-            {/* <FeaturesSection />
-            <EfficiencySection /> */}
             <FAQSection />
           </main>
         </div>

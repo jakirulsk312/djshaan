@@ -128,10 +128,13 @@ const Footer: React.FC = () => {
         <div className="mt-12 pt-8 border-t border-primary/20">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
             <div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">Stay updated with our latest releases</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-2">The business is engaged in the following activities:</h3>
               <p className="text-muted-foreground">
-                Get notified when we drop new DJ mashups and updates about our shows.
+                <span className="block">• DJ performances and music entertainment</span>
+                <span className="block">• Production and sale of digital music albums and edits (via online platforms and direct downloads)</span>
+                <span className="block">• Event curation and live shows</span>
               </p>
+
             </div>
             <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
               <input

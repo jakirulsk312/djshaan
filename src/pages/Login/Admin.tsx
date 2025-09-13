@@ -7,16 +7,26 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Lock, User, Shield } from "lucide-react";
 import api from "@/lib/api";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 const Admin = () => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // Dialog states
+  const [successDialog, setSuccessDialog] = useState({ open: false, message: "" });
+  const [errorDialog, setErrorDialog] = useState({ open: false, message: "" });
+
   const navigate = useNavigate();
 
-  // Clear token on page refresh
   useEffect(() => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
@@ -25,29 +35,27 @@ const Admin = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setCredentials((prev) => ({ ...prev, [name]: value }));
-    setError("");
   };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await api.post("/admin/login", {
-        email: credentials.email,
-        password: credentials.password,
-      });
+      const res = await api.post("/admin/login", credentials);
 
       if (res.data.success && res.data.token) {
         localStorage.setItem("token", res.data.token);
         setIsLoggedIn(true);
-        setError("");
-        navigate("/admin/dashboard");
+        setSuccessDialog({ open: true, message: "Login successful!" });
+        setTimeout(() => navigate("/admin/dashboard"), 1000);
       } else {
-        setError(res.data.message || "Invalid credentials");
-        setCredentials({ email: "", password: "" });
+        setErrorDialog({ open: true, message: res.data.message || "Invalid credentials" });
       }
     } catch (err) {
-      setError(err?.response?.data?.message || "Login failed. Please try again.");
+      setErrorDialog({
+        open: true,
+        message: err?.response?.data?.message || "Login failed. Please try again.",
+      });
     } finally {
       setLoading(false);
     }
@@ -59,7 +67,6 @@ const Admin = () => {
     navigate("/admin");
   };
 
-  // If logged in, show dashboard
   if (isLoggedIn) {
     return (
       <div className="min-h-screen bg-background">
@@ -87,14 +94,29 @@ const Admin = () => {
           </div>
         </main>
         <Footer />
+
+        <Dialog
+          open={successDialog.open}
+          onOpenChange={() => setSuccessDialog({ open: false, message: "" })}
+        >
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Success</DialogTitle>
+              <DialogDescription>{successDialog.message}</DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button onClick={() => setSuccessDialog({ open: false, message: "" })}>
+                OK
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     );
   }
 
-  // Otherwise show login form
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Background Image + Overlay */}
+    <div className="flex flex-col min-h-screen relative">
       <div className="relative flex-1">
         <div
           className="absolute inset-0 bg-cover bg-center bg-fixed"
@@ -102,7 +124,6 @@ const Admin = () => {
         ></div>
         <div className="absolute inset-0 bg-[hsl(230_20%_8%_/_0.85)]"></div>
 
-        {/* Content */}
         <div className="relative z-10">
           <Header />
           <main className="pt-36 pb-16 flex items-center justify-center">
@@ -120,12 +141,6 @@ const Admin = () => {
                 </div>
 
                 <form onSubmit={handleLogin} className="space-y-6">
-                  {error && (
-                    <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
-                      <p className="text-destructive text-sm font-medium">{error}</p>
-                    </div>
-                  )}
-
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
                       Email
@@ -166,6 +181,7 @@ const Admin = () => {
                     type="submit"
                     size="lg"
                     className="w-full flex justify-center items-center"
+                    disabled={loading}
                   >
                     {loading ? (
                       <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-primary mr-2"></div>
@@ -179,12 +195,39 @@ const Admin = () => {
             </Card>
           </main>
         </div>
+
+        {/* Fullscreen overlay spinner */}
+        {loading && (
+          <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          </div>
+        )}
       </div>
 
-      {/* Footer */}
       <footer className="relative z-10 bg-background text-foreground">
         <Footer />
       </footer>
+
+      {/* Error dialog */}
+      <Dialog
+        open={errorDialog.open}
+        onOpenChange={() => setErrorDialog({ open: false, message: "" })}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="text-red-500">Error</DialogTitle>
+            <DialogDescription>{errorDialog.message}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="destructive"
+              onClick={() => setErrorDialog({ open: false, message: "" })}
+            >
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

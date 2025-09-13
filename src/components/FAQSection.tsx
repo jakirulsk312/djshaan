@@ -9,7 +9,7 @@ const FAQSection = () => {
     {
       question: "What kind of tracks does VDJ Shaan drop?",
       answer:
-        "High-energy mashups across Bengali, Hindi, English, and Bhojpuri—crafted to blend classic melodies with modern beats.",
+        "High-energy Bolly Fusion and Afro House sounds inspired by India and Mirage signature style crafted to blend classic melodies with modern global beats.",
     },
     {
       question: "How often do you release new mixes?",

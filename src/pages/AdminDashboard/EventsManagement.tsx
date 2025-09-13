@@ -86,10 +86,13 @@ const EventManagement = () => {
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this event?")) return;
     try {
+      setLoading(true);
       await api.delete(`/events/${id}`);
       setEvents((prev) => prev.filter((e) => e._id !== id));
     } catch {
       alert("Failed to delete event");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -106,8 +109,15 @@ const EventManagement = () => {
   const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
+    <div className="min-h-screen bg-background relative">
+      {/* Loader Overlay */}
+      {loading && (
+        <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        </div>
+      )}
+
+
 
       <main className="pt-20 pb-16">
         <div className="container mx-auto px-4">
@@ -140,7 +150,7 @@ const EventManagement = () => {
                   onChange={handleChange}
                 />
                 <Button type="submit" disabled={loading}>
-                  {loading ? (editEventId ? "Updating..." : "Saving...") : editEventId ? "Update" : "Add"}
+                  {editEventId ? "Update" : "Add"}
                 </Button>
               </form>
             </CardContent>
@@ -164,21 +174,30 @@ const EventManagement = () => {
           </div>
 
           {/* Events List */}
-          {loading ? (
-            <p className="text-muted-foreground">Loading events...</p>
-          ) : currentEvents.length === 0 ? (
+          {currentEvents.length === 0 ? (
             <p className="text-muted-foreground">No events found.</p>
           ) : (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {currentEvents.map((event) => (
-                  <Card key={event._id} className="border border-primary/20 hover:shadow-lg transition">
+                  <Card
+                    key={event._id}
+                    className="border border-primary/20 hover:shadow-lg transition"
+                  >
                     <CardContent className="p-4">
                       <p className="text-lg font-semibold">{event.date}</p>
                       <p className="text-xl font-bold mb-4">{event.venue}</p>
                       <div className="flex gap-3">
-                        <Button size="sm" onClick={() => handleEdit(event)}>Edit</Button>
-                        <Button size="sm" variant="destructive" onClick={() => handleDelete(event._id)}>Delete</Button>
+                        <Button size="sm" onClick={() => handleEdit(event)}>
+                          Edit
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleDelete(event._id)}
+                        >
+                          Delete
+                        </Button>
                       </div>
                     </CardContent>
                   </Card>
@@ -221,7 +240,7 @@ const EventManagement = () => {
         </div>
       </main>
 
-      <Footer />
+  
     </div>
   );
 };

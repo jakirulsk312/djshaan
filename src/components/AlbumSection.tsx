@@ -1,7 +1,7 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { AlertCircle } from "lucide-react";
 import api from "@/lib/api";
 import { useNavigate } from "react-router-dom";
 
@@ -16,51 +16,11 @@ interface Album {
   driveFileId: string;
 }
 
-// Simple login modal (same as in Albums page)
-const LoginPromptModal = ({
-  open,
-  onClose,
-  onLogin,
-}: {
-  open: boolean;
-  onClose: () => void;
-  onLogin: () => void;
-}) => {
-  if (!open) return null;
-  return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-  <div className="bg-background p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
-    <div className="flex items-center justify-center mb-4">
-      <AlertCircle className="h-6 w-6 text-destructive mr-2" />
-      <h3 className="text-lg font-bold">Login Required</h3>
-    </div>
-    <p className="mb-6">
-      You need to login or register to download or play an album.
-    </p>
-    <div className="flex justify-center gap-4">
-      <Button onClick={onLogin}>Login / Register</Button>
-      <Button variant="outline" onClick={onClose}>
-        Cancel
-      </Button>
-    </div>
-  </div>
-</div>
-  );
-};
-
 const AlbumSection = () => {
   const [albums, setAlbums] = useState<Album[]>([]);
   const [loading, setLoading] = useState(true);
-  const [processingOrder, setProcessingOrder] = useState<string | null>(null);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [pendingAlbum, setPendingAlbum] = useState<string | null>(null);
 
   const navigate = useNavigate();
-
-  const PAYU_BASE_URL =
-    import.meta.env.VITE_NODE_ENV === "production"
-      ? import.meta.env.VITE_PAYU_BASE_URL_PROD
-      : import.meta.env.VITE_PAYU_BASE_URL_TEST;
 
   useEffect(() => {
     const fetchLatestAlbums = async () => {
@@ -77,61 +37,10 @@ const AlbumSection = () => {
     };
 
     fetchLatestAlbums();
-
-    // Resume order if login just happened
-    const pendingAlbumId = localStorage.getItem("pendingAlbumId");
-    const token = sessionStorage.getItem("token");
-    if (pendingAlbumId && token) {
-      localStorage.removeItem("pendingAlbumId");
-      createOrder(pendingAlbumId);
-    }
   }, []);
 
-  const createOrder = async (albumId: string) => {
-    const token = sessionStorage.getItem("token");
-    if (!token) {
-      setPendingAlbum(albumId);
-      setShowLoginModal(true);
-      return;
-    }
-
-    try {
-      setProcessingOrder(albumId);
-      const res = await api.post(
-        "/orders/create",
-        { albumId },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const payuData = res.data.data;
-
-      const form = document.createElement("form");
-      form.method = "POST";
-      form.action = PAYU_BASE_URL;
-
-      Object.keys(payuData).forEach((key) => {
-        const input = document.createElement("input");
-        input.type = "hidden";
-        input.name = key;
-        input.value = payuData[key];
-        form.appendChild(input);
-      });
-
-      document.body.appendChild(form);
-      form.submit();
-    } catch (err) {
-      console.error("Order creation failed:", err);
-      alert(err?.response?.data?.message || "Failed to create order. Please try again.");
-    } finally {
-      setProcessingOrder(null);
-    }
-  };
-
-  const handleLoginRedirect = () => {
-    setShowLoginModal(false);
-    if (pendingAlbum) {
-      localStorage.setItem("pendingAlbumId", pendingAlbum);
-    }
-    navigate("/login");
+  const handleCheckoutRedirect = (albumId: string) => {
+    navigate(`/checkout/${albumId}`);
   };
 
   return (
@@ -161,39 +70,44 @@ const AlbumSection = () => {
               return (
                 <Card
                   key={album._id}
-                  className="group border border-primary/20 bg-card/50 backdrop-blur-sm hover:border-primary/50 transition-all duration-300 hover:scale-105 cursor-pointer"
+                  className="group border-primary/20 bg-card/50 backdrop-blur-sm 
+             hover:border-primary/50 transition-all duration-300 
+             hover:scale-105 animate-float cursor-pointer"
                 >
                   <CardContent className="p-0">
-                    <div className="relative w-full h-32 overflow-hidden rounded-t-lg">
+                    <div className="relative w-full h-72 overflow-hidden rounded-t-xl">
                       <img
                         src={album.image}
                         alt={album.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = "/placeholder.svg";
+                        }}
                       />
                     </div>
 
-                    <div className="p-3 text-left">
-                      <h3 className="font-semibold text-md mb-1 line-clamp-2">
+                    <div className="p-4 text-left">
+                      <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors duration-300 line-clamp-2">
                         {album.title}
                       </h3>
-                      <p className="text-xs text-muted-foreground line-clamp-2 mb-1">
+                      <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
                         {album.description}
                       </p>
                       <p className="text-xs text-muted-foreground mb-1">
                         Duration: {album.duration}
                       </p>
-                      <p className="font-medium text-primary mb-2 text-sm">
+                      <p className="font-medium text-primary mb-3 text-sm">
                         ₹{displayPrice}
                       </p>
+
                       <Button
                         size="sm"
-                        className="bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-sm px-3 py-2 w-full animate-pulse-glow transform hover:scale-105 transition-all duration-300"
-                        onClick={() => createOrder(album._id)}
-                        disabled={processingOrder === album._id}
+                        className="bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 
+                   text-sm px-3 py-2 w-full animate-pulse-glow transform hover:scale-105 transition-all duration-300"
+                        onClick={() => handleCheckoutRedirect(album._id)}
                       >
-                        {processingOrder === album._id
-                          ? "Processing..."
-                          : `Download ₹${displayPrice}`}
+                        Buy ₹{displayPrice}
                       </Button>
                     </div>
                   </CardContent>
@@ -214,13 +128,6 @@ const AlbumSection = () => {
           </Button>
         </div>
       </div>
-
-      {/* Login Modal */}
-      <LoginPromptModal
-        open={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-        onLogin={handleLoginRedirect}
-      />
     </section>
   );
 };

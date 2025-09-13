@@ -30,9 +30,9 @@ const Header = () => {
     { name: "Videos", path: "/videos" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
-    !user ? { name: "Login", path: "/login" } : null,
-    user ? { name: "My Account", path: "/purchases" } : null,
-    { name: "Admin", path: "/admin" },
+    // !user ? { name: "Login", path: "/login" } : null,
+    // user ? { name: "My Account", path: "/purchases" } : null,
+    // { name: "Admin", path: "/admin" },
   ].filter(Boolean);
 
   return (
@@ -65,11 +65,11 @@ const Header = () => {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-3">
-              <div className="bg-white rounded-full p-0.5 md:p-1 flex items-center justify-center">
+              {/* <div className="bg-white rounded-full p-0.5 md:p-1 flex items-center justify-center">
                 <img src="/vdj_logo.png" alt="VDJ Shaan Logo" className="h-12 w-12 md:h-14 md:w-14 object-contain" />
-              </div>
+              </div> */}
               <span className="text-3xl font-bold text-neon animate-glow hover:scale-105 transition-transform duration-300">
-                VDJ ShaaN
+                VDJ SHAAN
               </span>
             </Link>
 

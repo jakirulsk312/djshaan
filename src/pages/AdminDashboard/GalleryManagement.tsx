@@ -1,170 +1,3 @@
-
-// import { useEffect, useState } from "react";
-// import { Card, CardContent } from "@/components/ui/card";
-// import { Input } from "@/components/ui/input";
-// import { Button } from "@/components/ui/button";
-// import api from "@/lib/api";
-
-// type Image = {
-//   _id?: string;
-//   title: string;
-//   description?: string;
-//   imageUrl: string;
-// };
-
-// const GalleryManagement = () => {
-//   const [images, setImages] = useState<Image[]>([]);
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState("");
-//   const [success, setSuccess] = useState("");
-//   const [formData, setFormData] = useState<Partial<Image>>({});
-//   const [editId, setEditId] = useState<string | null>(null);
-//   const [file, setFile] = useState<File | null>(null);
-
-//   const fetchGallery = async () => {
-//     try {
-//       setLoading(true);
-//       const res = await api.get("/gallery");
-//       setImages(res.data.data || []);
-//     } catch {
-//       setError("Failed to fetch images.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchGallery();
-//   }, []);
-
-//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     setFormData({ ...formData, [e.target.name]: e.target.value });
-//   };
-
-//   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     if (e.target.files) setFile(e.target.files[0]);
-//   };
-
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     if (!formData.title) {
-//       setError("Title is required.");
-//       return;
-//     }
-
-//     try {
-//       setLoading(true);
-//       setError("");
-//       setSuccess("");
-
-//       let imageUrl = formData.imageUrl;
-
-//       if (file) {
-//   const formDataCloud = new FormData();
-//   formDataCloud.append("file", file);
-
-//   const res = await api.post("/upload?folder=gallery", formDataCloud, {
-//     headers: { "Content-Type": "multipart/form-data" },
-//   });
-
-//   imageUrl = res.data.url;
-// }
-
-
-//       if (editId) {
-//         await api.put(`/gallery/${editId}`, { ...formData, imageUrl });
-//         setSuccess("Image updated successfully!");
-//       } else {
-//         await api.post("/gallery", { ...formData, imageUrl });
-//         setSuccess("Image added successfully!");
-//       }
-
-//       setFormData({});
-//       setFile(null);
-//       setEditId(null);
-//       fetchGallery();
-//     } catch {
-//       setError("Failed to save image.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleEdit = (img: Image) => {
-//     setEditId(img._id!);
-//     setFormData(img);
-//     setFile(null);
-//   };
-
-//   const handleDelete = async (id?: string) => {
-//     if (!id) return;
-//     if (!confirm("Are you sure?")) return;
-//     try {
-//       await api.delete(`/gallery/${id}`);
-//       setImages(images.filter((i) => i._id !== id));
-//     } catch {
-//       alert("Failed to delete image.");
-//     }
-//   };
-
-//   return (
-//     <Card className="bg-card/40 backdrop-blur-sm border-primary/20 shadow-lg p-6">
-//       <CardContent>
-//         <h2 className="text-xl font-bold mb-4">{editId ? "Edit Image" : "Add New Image"}</h2>
-
-//         {success && <p className="text-green-500 mb-2">{success}</p>}
-//         {error && <p className="text-red-500 mb-2">{error}</p>}
-
-//         <form onSubmit={handleSubmit} className="flex flex-col gap-4 mb-6">
-//           <Input name="title" placeholder="Title" value={formData.title || ""} onChange={handleChange} />
-//           <Input name="description" placeholder="Description" value={formData.description || ""} onChange={handleChange} />
-//           <Input type="file" accept="image/*" onChange={handleFileChange} />
-
-//           {(file || formData.imageUrl) && (
-//             <img
-//               src={file ? URL.createObjectURL(file) : formData.imageUrl}
-//               alt="Preview"
-//               className="h-32 w-32 object-cover rounded-md border"
-//             />
-//           )}
-
-//           <Button type="submit" disabled={loading}>
-//             {loading ? (editId ? "Updating..." : "Uploading...") : editId ? "Update Image" : "Add Image"}
-//           </Button>
-//         </form>
-
-//         <h3 className="text-lg font-bold mb-2">All Images</h3>
-//         {loading ? (
-//           <p>Loading gallery...</p>
-//         ) : images.length === 0 ? (
-//           <p>No images found.</p>
-//         ) : (
-//           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-//             {images.map((img) => (
-//               <div key={img._id} className="bg-card/50 p-2 rounded-lg shadow-lg relative">
-//                 <img src={img.imageUrl} alt={img.title} className="w-full h-40 object-cover rounded-md" />
-//                 <h4 className="font-bold text-foreground mt-2">{img.title}</h4>
-//                 <div className="flex gap-2 mt-2">
-//                   <Button size="sm" variant="outline" onClick={() => handleEdit(img)}>Edit</Button>
-//                   <Button size="sm" variant="destructive" onClick={() => handleDelete(img._id)}>Delete</Button>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         )}
-//       </CardContent>
-//     </Card>
-//   );
-// };
-
-// export default GalleryManagement;
-
-
-
-
-
-
-
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -261,10 +94,10 @@ const GalleryManagement = () => {
 
       if (editId) {
         await api.put(`/gallery/${editId}`, { ...formData, imageUrl });
-        setSuccess("Image updated successfully!");
+        setSuccess("✅ Image updated successfully!");
       } else {
         await api.post("/gallery", { ...formData, imageUrl });
-        setSuccess("Image added successfully!");
+        setSuccess("✅ Image added successfully!");
       }
 
       setShowDialog(true);
@@ -275,7 +108,7 @@ const GalleryManagement = () => {
       setEditId(null);
       fetchGallery();
     } catch {
-      setError("Failed to save image.");
+      setError("❌ Failed to save image.");
     } finally {
       setLoading(false);
     }
@@ -335,20 +168,25 @@ const GalleryManagement = () => {
             />
           )}
 
-          <Button type="submit" disabled={loading}>
-            {loading
-              ? editId
-                ? "Updating..."
-                : "Uploading..."
-              : editId
-                ? "Update Image"
-                : "Add Image"}
+          <Button type="submit" disabled={loading} className="flex items-center justify-center">
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+                {editId ? "Updating..." : "Uploading..."}
+              </div>
+            ) : editId ? (
+              "Update Image"
+            ) : (
+              "Add Image"
+            )}
           </Button>
         </form>
 
         <h3 className="text-lg font-bold mb-2">All Images</h3>
         {loading ? (
-          <p>Loading gallery...</p>
+          <div className="flex justify-center items-center py-10">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          </div>
         ) : images.length === 0 ? (
           <p>No images found.</p>
         ) : (

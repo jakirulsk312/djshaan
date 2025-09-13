@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -48,12 +49,11 @@ const GallerySection = () => {
   return (
     <section className="py-10 relative overflow-hidden">
       <div className="container mx-auto px-4 text-center">
-       
         <h2 className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-lime-600 to-orange-500 bg-clip-text text-transparent mb-3">
           📸 Gallery Highlights
         </h2>
         <p className="text-sm md:text-base text-muted-foreground mb-8 max-w-2xl mx-auto italic">
-          Handpicked <span className="text-lime-500 font-medium">Images</span>  from our gallery 🎶
+          Handpicked <span className="text-lime-500 font-medium">Images</span> from our gallery 🎶
         </p>
 
         {loading ? (
@@ -63,39 +63,58 @@ const GallerySection = () => {
         ) : images.length === 0 ? (
           <p className="text-muted-foreground text-center">No images available</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-  {images.map((img, index) => (
-    <Card
-      key={img._id}
-      className="group border-primary/20 bg-card/50 backdrop-blur-sm hover:border-primary/50 transition-all duration-300 hover:scale-105 animate-float cursor-pointer overflow-visible"
-      style={{ animationDelay: `${index * 0.1}s` }}
-      onClick={() => openModal(index)}
-    >
-      <CardContent className="p-0">
-        {/* এখানে height বাড়ানো হলো */}
-        <div className="relative w-full h-56 sm:h-64 md:h-72 overflow-hidden rounded-t-lg">
-  <img
-    src={img.imageUrl}
-    alt={img.title}
-    className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-2 group-hover:-translate-x-2"
-  />
-</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {images.map((img, index) => (
+              <Card
+                key={img._id}
+                className="group border-primary/20 bg-card/50 backdrop-blur-sm 
+             hover:border-primary/50 transition-all duration-300 
+             hover:scale-105 animate-float cursor-pointer"
+                style={{ animationDelay: `${index * 0.1}s` }}
+                onClick={() => openModal(index)}
+              >
+                <CardContent className="p-0">
+                  {/* Image Container with hover overlay */}
+                  <div className="relative w-full h-72 overflow-hidden rounded-t-xl">
+                    <img
+                      src={img.imageUrl}
+                      alt={img.title}
+                      className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "/placeholder.svg";
+                      }}
+                    />
 
-        <div className="p-4 text-left">
-          <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors duration-300 line-clamp-2 text-sm md:text-base">
-            {img.title}
-          </h3>
-          {img.description && (
-            <p className="text-xs text-muted-foreground line-clamp-2">
-              {img.description}
-            </p>
-          )}
-        </div>
-      </CardContent>
-    </Card>
-  ))}
-</div>
+                    {/* Hover overlay (same as Gallery page) */}
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 
+                      transition-opacity duration-300 flex items-center justify-center">
+                      <div className="text-white text-center">
+                        <div className="w-12 h-12 bg-primary/80 rounded-full flex items-center justify-center mx-auto mb-2 animate-pulse-glow">
+                          <span className="text-xl">🔍</span>
+                        </div>
+                        <p className="text-sm font-medium">View Full Size</p>
+                      </div>
+                    </div>
+                  </div>
 
+                  {/* Image Info */}
+                  <div className="p-4 text-left">
+                    <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                      {img.title}
+                    </h3>
+                    {img.description && (
+                      <p className="text-sm text-muted-foreground line-clamp-2">
+                        {img.description}
+                      </p>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+
+
+            ))}
+          </div>
         )}
 
         <div className="mt-10">
